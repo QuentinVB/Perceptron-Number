@@ -1,7 +1,3 @@
-# Perceptron-test
-
-https://www.youtube.com/watch?v=IHZwWFHWa-w
-
 multilayer Perceptron
 
 2 hidden layer
