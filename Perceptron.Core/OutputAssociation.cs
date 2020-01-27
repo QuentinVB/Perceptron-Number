@@ -1,4 +1,4 @@
-﻿namespace Perceptron_Number
+﻿namespace Perceptron.Core
 {
     public struct OutputAssociation<Neuron,T>
     {

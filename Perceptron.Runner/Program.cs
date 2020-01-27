@@ -1,8 +1,9 @@
-﻿using ImageInput;
-using Perceptron_Number;
+﻿using Perceptron.Core;
+using Perceptron.Core.IO;
+using Perceptron.ImageInput;
 using System;
-using Perceptron_Number.IO;
-namespace Runner
+
+namespace Perceptron.Runner
 {
     class Program
     {
@@ -19,6 +20,7 @@ namespace Runner
 
             network.UpdateWeight();
             Console.WriteLine("Hello World!");
+            Console.Read();
         }
     }
 }

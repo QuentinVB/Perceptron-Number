@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using Perceptron_Number;
-using Perceptron_Number.IO;
+using Perceptron.Core;
 using System;
 
 
@@ -23,6 +22,7 @@ namespace Perceptron.Tests
             //assert
             sut.Should().NotThrow();
         }
+
         [TestCase(0.0f)]
         [TestCase(0.5f)]
         [TestCase(0.000001f)]
@@ -112,21 +112,10 @@ namespace Perceptron.Tests
             //act
             string outString = sut.ToString();
             //assert
-            outString.Should().Be($"w:{testValue}");
+            outString.Should().Be($"a:{testValue},b:0");
 
         }
-        [Test]
-        public void NeuronLink()
-        {
-            /*
-            //arrange
-            var sut = new Neuron(0.2f,10,10);
-            //act
-            //sut.
-            //assert
-            outString.Should().Be($"w:{testValue}");*/
 
-        }
         [TestCase(0.0f)]
         [TestCase(0.5f)]
         [TestCase(-10f)]

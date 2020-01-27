@@ -1,9 +1,9 @@
-﻿using Perceptron_Number.Interfaces;
+﻿using Perceptron.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Perceptron_Number
+namespace Perceptron.Core
 {
     public class Network<T>
     {
@@ -26,9 +26,8 @@ namespace Perceptron_Number
 
             AttachInput(inputLayer);
             CreateHiddenLayer(hiddenLayerCount);
-            AttachOutput(outputLayer, hiddenLayerCount);
+            AttachOutput(outputLayer, hiddenLayerCount+1);
 
-            //TODO : debug this
             BindAllNeuron();
         }
 
@@ -39,14 +38,12 @@ namespace Perceptron_Number
                 Neuron[] neurons = _layers[i].Neurons;
                 for (int j = 0; j < neurons.Length; j++)
                 {
-                    if(i + 1 < _layers.Length)
+                    if(i  < _layers.Length-1)
                     {
                         Neuron[] nextNeurons = _layers[i + 1].Neurons;
                         for (int k = 0; k < nextNeurons.Length; k++)
                         {
-                            Link link = new Link(neurons[j], neurons[k], 0.0f);
-                            neurons[j].AddChildren(link);
-                            neurons[k].AddParent(link);
+                            _ = new Link(neurons[j], nextNeurons[k], 0.0f);
                         }
                     }                       
                 }
@@ -74,12 +71,12 @@ namespace Perceptron_Number
             if (_inputLayer == null || _outputLayer == null) throw  new InvalidOperationException("Layer creation order is invalid");
             int topCount = _inputLayer.Width * _inputLayer.Height;
             int bottomCount = _outputLayer.OutputCount;
-            for (int i = 1; i < hiddenLayerCount+2; i++)
+            for (int i = 1; i < hiddenLayerCount+1; i++)
             {
                 _layers[i] = new Layer(
                     _neuronPerLayer, 
                     (i == 1) ? topCount : _neuronPerLayer, 
-                    (i == hiddenLayerCount+2) ? bottomCount : _neuronPerLayer
+                    (i == hiddenLayerCount) ? bottomCount : _neuronPerLayer
                     ) ;
             }
         }
@@ -132,7 +129,7 @@ namespace Perceptron_Number
                 Layer layer = Layers[i];
                 for (int j = 0; j < Layers[i].Neurons.Length; j++)
                 {
-                    layer.Neurons[j].ActivationLevel = layer.Neurons[j].ComputeWeight();
+                    layer.Neurons[j].ComputeWeight();
                 }
             }
         }

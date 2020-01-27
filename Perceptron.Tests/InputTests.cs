@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
-using Perceptron_Number;
-using ImageInput;
-using Perceptron_Number.IO;
+using Perceptron.Core;
+using Perceptron.ImageInput;
+using Perceptron.Core.IO;
 
 namespace Perceptron.Tests
 {

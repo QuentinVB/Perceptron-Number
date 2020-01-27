@@ -1,7 +1,7 @@
 using FluentAssertions;
 using NUnit.Framework;
-using Perceptron_Number;
-using Perceptron_Number.IO;
+using Perceptron.Core;
+using Perceptron.Core.IO;
 using System;
 
 namespace Perceptron.Tests
@@ -19,7 +19,9 @@ namespace Perceptron.Tests
             _output = Output<int>.DefaultOutput(default(int));
         }
 
-        [TestCase(2,2)]
+        [TestCase(1,1)]
+        [TestCase(2, 2)]
+        [TestCase(3,5)]
         public void NetworkCreation(int hiddenLayerCount, int neuronPerLayer)
         {
             //arrange

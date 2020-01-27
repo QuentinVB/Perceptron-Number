@@ -71,10 +71,10 @@ namespace Perceptron_Number.IO
 
         public static Input DefaultInput()
         {
-            int width = 5;
-            int height = 5;
+            int width = 3;
+            int height = 3;
             float[,] matrix = new float[width, height];
-            return new Input(5, 5, matrix);
+            return new Input(width, height, matrix);
         }
     }
 }

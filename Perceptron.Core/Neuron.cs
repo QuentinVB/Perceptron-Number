@@ -2,29 +2,29 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Perceptron.Tests")]
-namespace Perceptron_Number
+namespace Perceptron.Core
 {
     public class Neuron
     {
-        float _value; //activation level
-        float _bias=0; //activation level
+        float _activationLevel; //activation level
+        float _bias=0; //bias
         int _parentIndex=0;
         Link[] _parentsLink;
         int _childrenIndex=0;
         Link[] _childrenLink;
 
 
-        public Neuron(float value):
-            this(value,0,0)
+        public Neuron(float activationLevel) :
+            this(activationLevel, 0,0)
         {  }
 
 
-        public Neuron(float value,int parentsLinkCount, int childrenLinkCount)
+        public Neuron(float activationLevel,int parentsLinkCount, int childrenLinkCount)
         {
-            if (0 > value || value > 1) throw new ArgumentOutOfRangeException("Activation level should be between 0 and 1. Was " + value);
+            if (0 > activationLevel || activationLevel > 1) throw new ArgumentOutOfRangeException("Activation level should be between 0 and 1. Was " + activationLevel);
             if (parentsLinkCount<0) throw new ArgumentOutOfRangeException("parentLink Count should be positive");
             if (childrenLinkCount < 0) throw new ArgumentOutOfRangeException("childrenLink Count should be positive");
-            _value = value;
+            _activationLevel = activationLevel;
 
             _parentsLink = new Link[parentsLinkCount];
             _childrenLink = new Link[childrenLinkCount];
@@ -32,10 +32,10 @@ namespace Perceptron_Number
 
         ///activation level
         public float ActivationLevel { 
-            get => _value; 
+            get => _activationLevel; 
             set {
                 if ( 0> value || value > 1) throw new ArgumentOutOfRangeException("Activation level should be between 0 and 1. Was " + value);
-                _value = value; } 
+                _activationLevel = value; } 
         }
 
         public Link[] ParentsLink { get => _parentsLink; set => _parentsLink = value; }
@@ -53,13 +53,14 @@ namespace Perceptron_Number
 
         public override bool Equals(object obj)
         {
-            return obj is Neuron neuron &&
-                   _value == neuron._value;
+            return obj is Neuron neuron 
+                && _activationLevel == neuron.ActivationLevel
+                && _bias == neuron.Bias;
         }
 
         public override string ToString()
         {
-            return $"w:{_value}";
+            return $"a:{_activationLevel},b:{_bias}";
         }
 
         internal void AddParent(Link link)
@@ -93,35 +94,35 @@ namespace Perceptron_Number
         //TODO: sigmoid is old School !
         /*ReLU : rectified Linear Unit : learning will be faster
          */
-        public static float sigmoid(float x)
+        public static float Sigmoid(float x)
         {
             return 1f / 1f + (float)Math.Pow(Math.E,-x);
         }
         public static float ReLU(float x)
         {
-            if (x < 0) return 0;
-            return x;
+            return (x < 0)?0: x;
         }
-        public static float LeaxyReLU(float x)
+        public static float LeakyReLU(float x)
         {
-            if (x < 0) return x*0.001f;
-            return x;
+            return (x < 0)? x * 0.001f : x;
         }
 
         public static float Normalize(float x)
         {
-            if (x < 0) return 0;
-            else return Math.Max(0, x);
+            return (x < 0)?0:Math.Max(0, x);
         }
 
-        public float ComputeWeight()
+        public void ComputeWeight()
         {
-            return sigmoid(SumParents() + _bias);
+            _activationLevel = Sigmoid(SumParents() + _bias); 
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_value);
+            var hashCode = -1166464649;
+            hashCode = hashCode * -1521134295 + _activationLevel.GetHashCode();
+            hashCode = hashCode * -1521134295 + _bias.GetHashCode();
+            return hashCode;
         }
     }
 }

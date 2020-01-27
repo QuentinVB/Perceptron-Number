@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Perceptron_Number
+namespace Perceptron.Core
 {
     public class Layer
     {

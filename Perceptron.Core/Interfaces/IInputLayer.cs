@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Perceptron_Number.Interfaces
+namespace Perceptron.Core.Interfaces
 {
     public interface IInputLayer
     {
