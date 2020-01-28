@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\BasicConfiguration.cs" />
+    <Compile Include="Interfaces\IConfiguration.cs" />
     <Compile Include="Interfaces\IInputLayer.cs" />
     <Compile Include="Interfaces\IOutputReader.cs" />
     <Compile Include="IO\Input.cs" />
@@ -53,5 +55,6 @@
     <Compile Include="OutputAssociation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

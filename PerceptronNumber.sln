@@ -9,7 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perceptron.Core", "Perceptr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perceptron.ImageInput", "Perceptron.ImageInput\Perceptron.ImageInput.csproj", "{0D4EF85A-2A14-4096-A114-ABAA6B1D963B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perceptron.Tests", "Perceptron.Tests\Perceptron.Tests.csproj", "{5D396FE0-EC16-4D35-8FA2-2FAF14FAC254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Perceptron.Tests", "Perceptron.Tests\Perceptron.Tests.csproj", "{5D396FE0-EC16-4D35-8FA2-2FAF14FAC254}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{291912BB-357A-4AE8-BFF3-A7148D33431E}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

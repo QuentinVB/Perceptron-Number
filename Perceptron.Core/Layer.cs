@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Perceptron.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,23 +8,18 @@ namespace Perceptron.Core
     public class Layer
     {
         Neuron[] _neurons;
-        Random _randomsource;
 
         //make it enumerable ?
-        public Layer(int neuronCount)
-            : this(neuronCount, 1, 1, new Random()) { }
-        public Layer(int neuronCount, int topLayerNeuronCount, int bottomLayerNeuronCount)
-            : this(neuronCount, topLayerNeuronCount, bottomLayerNeuronCount, new Random()) { }
-
-        public Layer(int neuronCount, int topLayerNeuronCount, int bottomLayerNeuronCount, Random randomsource)
+        public Layer(int neuronCount, IConfiguration configuration)
+            : this(neuronCount, 1, 1, configuration) { }
+        
+        public Layer(int neuronCount, int topLayerNeuronCount, int bottomLayerNeuronCount, IConfiguration configuration)
         {
-            if(neuronCount <= 0 ) throw new ArgumentException("Neuron count should be strictly positive. Was " + neuronCount);
+            if (neuronCount <= 0) throw new ArgumentException("Neuron count should be strictly positive. Was " + neuronCount);
+            if (topLayerNeuronCount < 0) throw new ArgumentException("TopLayerNeuron count should be positive. Was " + topLayerNeuronCount);
+            if (bottomLayerNeuronCount < 0) throw new ArgumentException("BottomLayerNeuron count should be positive. Was " + bottomLayerNeuronCount);
 
-            if(topLayerNeuronCount < 0 ) throw new ArgumentException("topLayerNeuron count should be positive. Was " + topLayerNeuronCount);
-
-            if(bottomLayerNeuronCount < 0 ) throw new ArgumentException("bottomLayerNeuron count should be positive. Was " + bottomLayerNeuronCount);
-
-            _randomsource = randomsource;
+            Configuration = configuration;
             _neurons = new Neuron[neuronCount];
 
             FillNeuron(neuronCount, topLayerNeuronCount, bottomLayerNeuronCount);
@@ -33,14 +29,15 @@ namespace Perceptron.Core
         {
             for (int i = 0; i < neuronCount; i++)
             {
-                _neurons[i]=new Neuron(
-                    0.0f, 
-                    parentLayerNeuronCount, 
-                    childrenLayerNeuronCount, 
-                    (float)(_randomsource.NextDouble() * _randomsource.Next(-10,10))
+                _neurons[i] = new Neuron(
+                    0.0f,
+                    parentLayerNeuronCount,
+                    childrenLayerNeuronCount,
+                    Configuration.BiasSource
                 );
             }
         }
+        public IConfiguration Configuration { get;}
 
         public Neuron[] Neurons { get => _neurons; }
 

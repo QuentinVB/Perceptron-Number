@@ -11,25 +11,26 @@ namespace Perceptron.Core
         readonly IInputLayer _inputLayer;
         readonly IOutputReader<T> _outputLayer;
         readonly Layer[] _layers;
-        readonly int _neuronPerLayer;
-        readonly int _hiddenLayerCount;
-        public Network(int hiddenLayerCount,int neuronPerLayer, IInputLayer inputLayer, IOutputReader<T> outputLayer)
+
+        readonly IConfiguration _configuration;
+
+        public Network(IConfiguration configuration, IInputLayer inputLayer, IOutputReader<T> outputLayer)
         {
-            if (hiddenLayerCount <= 0) throw new ArgumentException("Layer count should be positive");
-            if (neuronPerLayer <= 0) throw new ArgumentException("Neuron per layer should be positive");
+            if (configuration.HiddenLayerCount <= 0) throw new ArgumentException("Layer count should be positive");
+            if (configuration.NeuronPerLayer <= 0) throw new ArgumentException("Neuron per layer should be positive");
+
+            _configuration = configuration;
+
             randomSource = new Random();
-            
-            _neuronPerLayer = neuronPerLayer;
-            _hiddenLayerCount = hiddenLayerCount;
 
             _inputLayer = inputLayer;
             _outputLayer = outputLayer;
 
-            _layers = new Layer[hiddenLayerCount+2];
+            _layers = new Layer[configuration.HiddenLayerCount+ 2];
 
             AttachInput(inputLayer);
-            CreateHiddenLayer(hiddenLayerCount);
-            AttachOutput(outputLayer, hiddenLayerCount+1);
+            CreateHiddenLayer();
+            AttachOutput(outputLayer, configuration.HiddenLayerCount + 1);
 
             BindAllNeuron();
         }
@@ -49,7 +50,7 @@ namespace Perceptron.Core
                             _ = new Link(
                                 neurons[j], 
                                 nextNeurons[k], 
-                                (float)randomSource.NextDouble()*0.1f);
+                                Configuration.BiasSource);
                         }
                     }                       
                 }
@@ -68,22 +69,24 @@ namespace Perceptron.Core
                 }
                 return count;         
             } }
+        public IConfiguration Configuration => _configuration;
 
         public IInputLayer InputLayer => _inputLayer;
         public IOutputReader<T> OutputLayer => _outputLayer;
 
-        private void CreateHiddenLayer(int hiddenLayerCount)
+        private void CreateHiddenLayer()
         {
             if (_inputLayer == null || _outputLayer == null) throw  new InvalidOperationException("Layer creation order is invalid");
             int topCount = _inputLayer.Width * _inputLayer.Height;
             int bottomCount = _outputLayer.OutputCount;
-            for (int i = 1; i < hiddenLayerCount+1; i++)
+            for (int i = 1; i < Configuration .HiddenLayerCount+ 1; i++)
             {
                 _layers[i] = new Layer(
-                    _neuronPerLayer, 
-                    (i == 1) ? topCount : _neuronPerLayer, 
-                    (i == hiddenLayerCount) ? bottomCount : _neuronPerLayer
-                    ) ;
+                    Configuration.NeuronPerLayer, 
+                    (i == 1) ? topCount : Configuration.NeuronPerLayer, 
+                    (i == Configuration.HiddenLayerCount) ? bottomCount : Configuration.NeuronPerLayer,
+                    Configuration
+                    );
             }
         }
 
@@ -92,14 +95,14 @@ namespace Perceptron.Core
         {
             int neuronPerLayer = inputLayer.Width * inputLayer.Height;
 
-            _layers[0] = new Layer(neuronPerLayer,0, _neuronPerLayer);
+            _layers[0] = new Layer(neuronPerLayer,0, Configuration.NeuronPerLayer,Configuration);
 
             inputLayer.LoadLayer(_layers[0]);
         }
 
         private void AttachOutput(IOutputReader<T> outputLayer,int layerPosition)
         {
-            _layers[layerPosition] = new Layer(outputLayer.OutputCount, _neuronPerLayer,0);
+            _layers[layerPosition] = new Layer(outputLayer.OutputCount, Configuration.NeuronPerLayer, 0,Configuration);
 
             for (int i = 0; i < _layers[layerPosition].Neurons.Length-1 ; i++)
             {
@@ -121,11 +124,12 @@ namespace Perceptron.Core
         public int TotalVariable { get
             {
                 return NeuronCount * 2 
-                    + (_inputLayer.Height * _inputLayer.Width) * _neuronPerLayer
-                    +_hiddenLayerCount* _neuronPerLayer               
+                    + (_inputLayer.Height * _inputLayer.Width) * Configuration.NeuronPerLayer
+                    + Configuration .HiddenLayerCount* Configuration.NeuronPerLayer
                  ;
             } 
         }
+
 
         public void UpdateWeight()
         {

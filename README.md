@@ -35,3 +35,5 @@ public class Logger
             File.WriteAllLines($".\\logs\\log-{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}.txt", _logContainer);
         }
     }
+
+https://fr.wikipedia.org/wiki/Fonction_d%27activation

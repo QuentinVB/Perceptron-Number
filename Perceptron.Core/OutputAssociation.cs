@@ -2,17 +2,12 @@
 {
     public struct OutputAssociation<Neuron,T>
     {
-        readonly T _associatedValue;
-        readonly Neuron _neuron;
-
-        public T ValueOut { get => _associatedValue; }
-
-        public Neuron LinkedNeuron => _neuron;
-
+        public T ValueOut { get; }
+        public Neuron LinkedNeuron { get; }
         public OutputAssociation(T valueOut, Neuron neuron)
         {
-            _associatedValue = valueOut;
-            _neuron = neuron;
+            ValueOut = valueOut;
+            LinkedNeuron = neuron;
         }
     }
 }
