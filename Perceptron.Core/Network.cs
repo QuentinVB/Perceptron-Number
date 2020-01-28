@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Perceptron.Core
 {
-    public class Network<T>
+    public partial class Network<T>
     {
+        Random randomSource;
         readonly IInputLayer _inputLayer;
         readonly IOutputReader<T> _outputLayer;
         readonly Layer[] _layers;
@@ -16,6 +17,8 @@ namespace Perceptron.Core
         {
             if (hiddenLayerCount <= 0) throw new ArgumentException("Layer count should be positive");
             if (neuronPerLayer <= 0) throw new ArgumentException("Neuron per layer should be positive");
+            randomSource = new Random();
+            
             _neuronPerLayer = neuronPerLayer;
             _hiddenLayerCount = hiddenLayerCount;
 
@@ -43,7 +46,10 @@ namespace Perceptron.Core
                         Neuron[] nextNeurons = _layers[i + 1].Neurons;
                         for (int k = 0; k < nextNeurons.Length; k++)
                         {
-                            _ = new Link(neurons[j], nextNeurons[k], 0.0f);
+                            _ = new Link(
+                                neurons[j], 
+                                nextNeurons[k], 
+                                (float)randomSource.NextDouble()*0.1f);
                         }
                     }                       
                 }

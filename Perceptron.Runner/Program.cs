@@ -15,11 +15,15 @@ namespace Perceptron.Runner
 
             Input input = new Input(20, 20, matrix);
 
-            Output<int> output = Output<int>.DefaultOutput(default(int));
-            Network<int> network = new Network<int>(2, 4, input,output);
-
+            Output<int> output = new Output<int>(new int[10] { 0,1,2,3,4,5,6,7,8,9});
+            Network<int> network = new Network<int>(2, 8, input,output);
+            
+            Console.WriteLine(network.Print());
             network.UpdateWeight();
-            Console.WriteLine("Hello World!");
+
+            Console.WriteLine(network.Print());
+            Console.WriteLine("Finished !");
+
             Console.Read();
         }
     }

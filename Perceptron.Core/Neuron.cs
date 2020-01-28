@@ -15,16 +15,17 @@ namespace Perceptron.Core
 
 
         public Neuron(float activationLevel) :
-            this(activationLevel, 0,0)
+            this(activationLevel, 0,0,0)
         {  }
 
 
-        public Neuron(float activationLevel,int parentsLinkCount, int childrenLinkCount)
+        public Neuron(float activationLevel,int parentsLinkCount, int childrenLinkCount,float bias)
         {
             if (0 > activationLevel || activationLevel > 1) throw new ArgumentOutOfRangeException("Activation level should be between 0 and 1. Was " + activationLevel);
             if (parentsLinkCount<0) throw new ArgumentOutOfRangeException("parentLink Count should be positive");
             if (childrenLinkCount < 0) throw new ArgumentOutOfRangeException("childrenLink Count should be positive");
             _activationLevel = activationLevel;
+            _bias = bias;
 
             _parentsLink = new Link[parentsLinkCount];
             _childrenLink = new Link[childrenLinkCount];
@@ -96,7 +97,7 @@ namespace Perceptron.Core
          */
         public static float Sigmoid(float x)
         {
-            return 1f / 1f + (float)Math.Pow(Math.E,-x);
+            return 1f / (1f + (float)Math.Pow(Math.E,-x));
         }
         public static float ReLU(float x)
         {
