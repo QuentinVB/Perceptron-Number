@@ -10,6 +10,7 @@ namespace Perceptron.Runner
     {
         static void Main(string[] args)
         {
+            /*
             //SourceImage.Render(SourceImage.CreateRandomPicture(20, 20), 20, 20);
             
             //var matrix = SourceImage.GetBWMatrixFromPicture("1579480335.png");
@@ -27,6 +28,12 @@ namespace Perceptron.Runner
             network.UpdateWeight();
             Console.WriteLine(network.Print());
 
+            
+            */
+
+            var dal = new NetworkStorage();
+
+            dal.CreateDB();
             Console.WriteLine("Finished !");
             Console.ReadLine();
         }

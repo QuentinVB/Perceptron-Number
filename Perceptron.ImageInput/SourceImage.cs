@@ -9,7 +9,7 @@ namespace Perceptron.ImageInput
     {
         public static float[,] GetBWMatrixFromPicture(string pictureName)
         {
-            string path = Directory.GetCurrentDirectory()  + "\\input\\" + pictureName;
+            string path = Directory.GetCurrentDirectory()  + @"\input\" + pictureName;
             float[,] matrix;
             //read
             using (Bitmap bmp = new Bitmap(path))

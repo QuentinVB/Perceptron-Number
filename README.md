@@ -52,3 +52,5 @@ extraire un max d'hyperparamètres
 -rate scheduling (gradient descent)
 
 https://ef.readthedocs.io/en/staging/platforms/netcore/new-db-sqlite.html
+
+https://blog.maskalik.com/asp-net/sqlite-simple-database-with-dapper/
