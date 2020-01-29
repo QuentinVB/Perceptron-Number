@@ -14,7 +14,11 @@ namespace Perceptron.Core
 
         readonly IConfiguration _configuration;
 
-        public Network(IConfiguration configuration, IInputLayer inputLayer, IOutputReader<T> outputLayer)
+        public Network(
+            IConfiguration configuration, 
+            IInputLayer inputLayer, 
+            IOutputReader<T> outputLayer
+            )
         {
             if (configuration.HiddenLayerCount <= 0) throw new ArgumentException("Layer count should be positive");
             if (configuration.NeuronPerLayer <= 0) throw new ArgumentException("Neuron per layer should be positive");
@@ -70,7 +74,6 @@ namespace Perceptron.Core
                 return count;         
             } }
         public IConfiguration Configuration => _configuration;
-
         public IInputLayer InputLayer => _inputLayer;
         public IOutputReader<T> OutputLayer => _outputLayer;
 
@@ -82,10 +85,11 @@ namespace Perceptron.Core
             for (int i = 1; i < Configuration .HiddenLayerCount+ 1; i++)
             {
                 _layers[i] = new Layer(
+                    Configuration,
                     Configuration.NeuronPerLayer, 
                     (i == 1) ? topCount : Configuration.NeuronPerLayer, 
-                    (i == Configuration.HiddenLayerCount) ? bottomCount : Configuration.NeuronPerLayer,
-                    Configuration
+                    (i == Configuration.HiddenLayerCount) ? bottomCount : Configuration.NeuronPerLayer
+                    
                     );
             }
         }
@@ -95,14 +99,14 @@ namespace Perceptron.Core
         {
             int neuronPerLayer = inputLayer.Width * inputLayer.Height;
 
-            _layers[0] = new Layer(neuronPerLayer,0, Configuration.NeuronPerLayer,Configuration);
+            _layers[0] = new Layer(Configuration,neuronPerLayer, 0, Configuration.NeuronPerLayer);
 
             inputLayer.LoadLayer(_layers[0]);
         }
 
         private void AttachOutput(IOutputReader<T> outputLayer,int layerPosition)
         {
-            _layers[layerPosition] = new Layer(outputLayer.OutputCount, Configuration.NeuronPerLayer, 0,Configuration);
+            _layers[layerPosition] = new Layer(Configuration,outputLayer.OutputCount, Configuration.NeuronPerLayer, 0);
 
             for (int i = 0; i < _layers[layerPosition].Neurons.Length-1 ; i++)
             {

@@ -6,6 +6,8 @@ using FluentAssertions;
 using Perceptron.Core;
 using Perceptron.ImageInput;
 using Perceptron.Core.IO;
+using Perceptron.Core.Interfaces;
+using Perceptron.Core.Configurations;
 
 namespace Perceptron.Tests
 {
@@ -15,12 +17,14 @@ namespace Perceptron.Tests
         int width=20;
         int heigth=20;
         Layer fakelayer;
+        IConfiguration config;
 
         [SetUp]
         public void Setup()
         {
             matrix = SourceImage.GetBWMatrixFromPicture("1579480335.png");
-            fakelayer = new Layer(width* heigth);
+            config = new BasicConfiguration();
+            fakelayer = new Layer(config,width * heigth);
         }
         [Test]
         public void CreateInput()

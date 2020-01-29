@@ -19,7 +19,23 @@ namespace Perceptron.Core
         {  }
 
 
-        public Neuron(float activationLevel,int parentsLinkCount, int childrenLinkCount,float bias)
+        public Neuron(float activationLevel,float bias) :
+            this(activationLevel, 0, 0, bias)
+        { }
+
+        public Neuron(
+            float activationLevel,
+            int parentsLinkCount,
+            int childrenLinkCount
+            )
+            : this(activationLevel, parentsLinkCount, childrenLinkCount, 0)
+        { }
+
+            public Neuron(
+            float activationLevel,
+            int parentsLinkCount, 
+            int childrenLinkCount,
+            float bias)
         {
             if (0 > activationLevel || activationLevel > 1) throw new ArgumentOutOfRangeException("Activation level should be between 0 and 1. Was " + activationLevel);
             if (parentsLinkCount<0) throw new ArgumentOutOfRangeException("parentLink Count should be positive");
@@ -110,7 +126,7 @@ namespace Perceptron.Core
 
         public static float Normalize(float x)
         {
-            return (x < 0)?0:Math.Max(0, x);
+            return (x < 0)?0:Math.Min(x, 1);
         }
 
         public void ComputeWeight()

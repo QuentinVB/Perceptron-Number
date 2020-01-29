@@ -1,6 +1,8 @@
 using FluentAssertions;
 using NUnit.Framework;
 using Perceptron.Core;
+using Perceptron.Core.Configurations;
+using Perceptron.Core.Interfaces;
 using Perceptron.Core.IO;
 using System;
 
@@ -11,21 +13,21 @@ namespace Perceptron.Tests
         //TODO: should test the input/output
         Input _input ;
         Output<int> _output;
+        IConfiguration commonConfig;
 
         [SetUp]
         public void Setup()
         {
             _input = Input.DefaultInput();
             _output = Output<int>.DefaultOutput(default(int));
+            commonConfig = new BasicConfiguration();
         }
 
-        [TestCase(1,1)]
-        [TestCase(2, 2)]
-        [TestCase(3,5)]
-        public void NetworkCreation(int hiddenLayerCount, int neuronPerLayer)
+        [Test]
+        public void NetworkCreation()
         {
             //arrange
-            Action sut = () => new Network<int>(hiddenLayerCount, neuronPerLayer, _input,_output);
+            Action sut = () => new Network<int>(commonConfig, _input,_output);
             //Act
 
             //assert
@@ -43,8 +45,9 @@ namespace Perceptron.Tests
         public void FalsyNetworkCreation(int hiddenLayerCount, int neuronPerLayer)
         {
             //arrange
-            Action sut = ()=> new Network<int>(hiddenLayerCount, neuronPerLayer, _input, _output);
+            IConfiguration testConfig = new TestableConfiguration(hiddenLayerCount, neuronPerLayer);
             //Act
+            Action sut = () => new Network<int>(testConfig, _input, _output);
             //assert
             sut.Should().Throw<ArgumentException>();
         }
@@ -53,9 +56,9 @@ namespace Perceptron.Tests
         public void NetworkLayerCount(int hiddenLayerCount, int neuronPerLayer)
         {
             //arrange
-            Network<int> sut = new Network<int>(hiddenLayerCount, neuronPerLayer, _input, _output);
+            IConfiguration testConfig = new TestableConfiguration(hiddenLayerCount, neuronPerLayer);
             //Act
-
+            Network<int> sut = new Network<int>(testConfig, _input, _output);
             //assert
             sut.Layers.Length.Should().Be(hiddenLayerCount+2);
         }
@@ -63,9 +66,9 @@ namespace Perceptron.Tests
         public void NetworkTotalNeuronCount(int hiddenLayerCount, int neuronPerLayer)
         {
             //arrange
-            Network<int> sut = new Network<int>(hiddenLayerCount, neuronPerLayer, _input, _output);
+            IConfiguration testConfig = new TestableConfiguration(hiddenLayerCount, neuronPerLayer);
             //Act
-
+            Network<int> sut = new Network<int>(testConfig, _input, _output);
             //assert
             sut.NeuronCount.Should().Be(
                 (hiddenLayerCount* neuronPerLayer) 
@@ -78,7 +81,7 @@ namespace Perceptron.Tests
         public void NetworkReadResult()
         {
             //arrange
-            Network<int> sut = new Network<int>(2, 2, _input, _output);
+            Network<int> sut = new Network<int>(commonConfig, _input, _output);
             //Act
 
             //assert

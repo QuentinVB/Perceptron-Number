@@ -37,3 +37,18 @@ public class Logger
     }
 
 https://fr.wikipedia.org/wiki/Fonction_d%27activation
+
+Feed forward
+Backpropagation
+
+
+Logguer !
+=> epoch
+
+No adaptative random for seeding !
+Activation function => different selon la couche (wtf !)
+extraire un max d'hyperparamètres
+- learning rate (alpha)
+-rate scheduling (gradient descent)
+
+https://ef.readthedocs.io/en/staging/platforms/netcore/new-db-sqlite.html

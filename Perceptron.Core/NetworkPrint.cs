@@ -23,7 +23,7 @@ namespace Perceptron.Core
                 for (int j = 0; j < Layers[i].Neurons.Length; j++)
                 {
                     sb.Append(ToAscii(Layers[i].Neurons[j].ActivationLevel));
-                    sb.Append(" ");
+                    if(i==0&&j%InputLayer.Width==0)sb.Append("\n");
                 }
                 sb.Append("\n");
                 if(i == Layers.Length-1)

@@ -10,19 +10,30 @@ namespace Perceptron.Core
         Neuron[] _neurons;
 
         //make it enumerable ?
-        public Layer(int neuronCount, IConfiguration configuration)
-            : this(neuronCount, 1, 1, configuration) { }
-        
-        public Layer(int neuronCount, int topLayerNeuronCount, int bottomLayerNeuronCount, IConfiguration configuration)
+        public Layer(IConfiguration configuration, int neuronQuantity)
+            : this(configuration, neuronQuantity, 0,0) { }
+
+        /// <summary>
+        /// Create a new layer for the neural network
+        /// </summary>
+        /// <param name="configuration">The global configuration object</param>
+        /// <param name="neuronQuantity">The neuron quantity for this layer </param>
+        /// <param name="topLayerNeuronCount">The neuron quantity for the layer above</param>
+        /// <param name="bottomLayerNeuronCount">The neuron quantity for the layer below</param>
+        public Layer(
+            IConfiguration configuration,
+            int neuronQuantity, 
+            int topLayerNeuronCount, 
+            int bottomLayerNeuronCount)
         {
-            if (neuronCount <= 0) throw new ArgumentException("Neuron count should be strictly positive. Was " + neuronCount);
+            if (neuronQuantity <= 0) throw new ArgumentException("Neuron count should be strictly positive. Was " + neuronQuantity);
             if (topLayerNeuronCount < 0) throw new ArgumentException("TopLayerNeuron count should be positive. Was " + topLayerNeuronCount);
             if (bottomLayerNeuronCount < 0) throw new ArgumentException("BottomLayerNeuron count should be positive. Was " + bottomLayerNeuronCount);
 
             Configuration = configuration;
-            _neurons = new Neuron[neuronCount];
+            _neurons = new Neuron[neuronQuantity];
 
-            FillNeuron(neuronCount, topLayerNeuronCount, bottomLayerNeuronCount);
+            FillNeuron(neuronQuantity, topLayerNeuronCount, bottomLayerNeuronCount);
         }
 
         private void FillNeuron(int neuronCount, int parentLayerNeuronCount, int childrenLayerNeuronCount)

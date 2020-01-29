@@ -4,20 +4,24 @@ using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
 using Perceptron.Core;
+using Perceptron.Core.Interfaces;
+using Perceptron.Core.Configurations;
 
 namespace Perceptron.Tests
 {
     public class LayerTests
     {
+        IConfiguration config;
         [SetUp]
         public void Setup()
         {
+            config = new BasicConfiguration();
         }
         [Test]
         public void CreateLayer()
         {
             //arrange
-            Action sut = () => new Layer(2);
+            Action sut = () => new Layer(config,2);
             //act
             //assert
 
@@ -30,7 +34,7 @@ namespace Perceptron.Tests
         public void CreateLayerValue(int testValue)
         {
             //arrange
-            var sut = new Layer(testValue);
+            var sut = new Layer(config,testValue);
             //act
             //assert
 
@@ -42,7 +46,7 @@ namespace Perceptron.Tests
         [TestCase(0,1,1)]
         public void CreateFalsyLayer(int neuronCount,int topNeuronCount, int bottomNeuronCount)
         {
-            Action sut = () => new Layer(neuronCount, topNeuronCount,bottomNeuronCount);
+            Action sut = () => new Layer(config,neuronCount, topNeuronCount,bottomNeuronCount);
             //act
             //assert
             sut.Should().Throw<ArgumentException>();
@@ -50,7 +54,7 @@ namespace Perceptron.Tests
         [Test]
         public void LayerNeuronInitialization()
         {
-            Layer sut = new Layer(20);
+            Layer sut = new Layer(config,20);
             //act
             //assert
             foreach (Neuron neuron in sut.Neurons)

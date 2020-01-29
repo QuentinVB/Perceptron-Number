@@ -19,7 +19,7 @@ namespace Perceptron.Tests
         [TestCase(-5f,0)]
         [TestCase(-1f,0)]
         [TestCase(-0.01f,0)]
-        [TestCase(0f,0f)]
+        [TestCase(0f,0.5f)]
         [TestCase(0.01f, 0)]
         [TestCase(1f, 0)]
         [TestCase(5f, 0)]
@@ -30,16 +30,16 @@ namespace Perceptron.Tests
             var sut = Neuron.Sigmoid(x);
             //assert
 
-            sut.Should().BeApproximately(y, 0.01F);
+            sut.Should().BeApproximately(y, 0.001F);
         }
 
         [TestCase(-5f, 0)]
         [TestCase(-1f, 0)]
         [TestCase(-0.01f, 0)]
         [TestCase(0f, 0f)]
-        [TestCase(0.01f, 0)]
-        [TestCase(1f, 0)]
-        [TestCase(5f, 0)]
+        [TestCase(0.01f, 0.01f)]
+        [TestCase(1f, 1f)]
+        [TestCase(5f, 5f)]
         public void TestReLU(float x, float y)
         {
             //arrange
@@ -47,16 +47,16 @@ namespace Perceptron.Tests
             var sut = Neuron.ReLU(x);
             //assert
 
-            sut.Should().BeApproximately(y, 0.01F);
+            sut.Should().BeApproximately(y, 0.001F);
         }
 
-        [TestCase(-5f, 0)]
-        [TestCase(-1f, 0)]
+        [TestCase(-5f, -0.005f)]
+        [TestCase(-1f, -0.001f)]
         [TestCase(-0.01f, 0)]
         [TestCase(0f, 0f)]
-        [TestCase(0.01f, 0)]
-        [TestCase(1f, 0)]
-        [TestCase(5f, 0)]
+        [TestCase(0.01f, 0.01f)]
+        [TestCase(1f, 1f)]
+        [TestCase(5f, 5f)]
         public void TestLeakyReLU(float x, float y)
         {
             //arrange
@@ -64,7 +64,7 @@ namespace Perceptron.Tests
             var sut = Neuron.LeakyReLU(x);
             //assert
 
-            sut.Should().BeApproximately(y, 0.01F);
+            sut.Should().BeApproximately(y, 0.0001F);
         }
 
         [TestCase(-5f, 0)]
@@ -72,8 +72,8 @@ namespace Perceptron.Tests
         [TestCase(-0.01f, 0)]
         [TestCase(0f, 0f)]
         [TestCase(0.01f, 0)]
-        [TestCase(1f, 0)]
-        [TestCase(5f, 0)]
+        [TestCase(1f, 1f)]
+        [TestCase(5f, 1f)]
         public void TestNormalize(float x, float y)
         {
             //arrange
@@ -82,13 +82,6 @@ namespace Perceptron.Tests
             //assert
 
             sut.Should().BeApproximately(y, 0.01F);
-        }
-
-
-
-
-
-
-        
+        }  
     }
 }
