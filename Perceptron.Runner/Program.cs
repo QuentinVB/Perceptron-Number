@@ -31,9 +31,11 @@ namespace Perceptron.Runner
             
             */
 
-            var dal = new NetworkStorage();
+            var dal = new DataAccessLayer();
 
-            dal.CreateDB();
+            //dal.CreateDatabase();
+            dal.SaveLayer(new Layer(new BasicConfiguration(), 5),2);
+
             Console.WriteLine("Finished !");
             Console.ReadLine();
         }

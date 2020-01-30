@@ -30,4 +30,6 @@ public class Logger
             Directory.CreateDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory() + "\\logs\\"));
             File.WriteAllLines($".\\logs\\log-{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}.txt", _logContainer);
         }
-    }
+    }$
+
+https://stackoverflow.com/questions/13028069/unable-to-load-dll-sqlite-interop-dll

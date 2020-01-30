@@ -14,7 +14,7 @@ namespace Perceptron.Core.Configurations
         public int HiddenLayerCount { get => 2; }
         public int NeuronPerLayer { get => 8; }
         public float BiasSource { get => (float)(_randomSource.NextDouble() * _randomSource.Next(-10, 10)); }
-        public float WeightSource { get => (float)(_randomSource.NextDouble() * 0.1f); }
+        public float WeightSource { get => (float)(_randomSource.NextDouble()); }
         public Random RandomSource { get => _randomSource; }
         public float ActivationFunction(float x) => Neuron.Sigmoid(x);
     }

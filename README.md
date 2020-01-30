@@ -54,3 +54,7 @@ extraire un max d'hyperparamètres
 https://ef.readthedocs.io/en/staging/platforms/netcore/new-db-sqlite.html
 
 https://blog.maskalik.com/asp-net/sqlite-simple-database-with-dapper/
+
+
+.mode column
+.headers on
