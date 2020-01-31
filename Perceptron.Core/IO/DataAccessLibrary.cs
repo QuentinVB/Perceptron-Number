@@ -9,7 +9,7 @@ using Dapper;
 
 namespace Perceptron.Core.IO
 {
-    public class DataAccessLayer
+    public class DataAccessLibrary
     {
         public static string DbFile
         {
@@ -34,27 +34,27 @@ namespace Perceptron.Core.IO
                 con.Execute("CREATE TABLE Layer(" +
                     "Id INTEGER PRIMARY KEY,"+
                     "Depth INT)"); //-1:out 0:in , other:hiddenlayer
-                
+
                 //Neuron
+                //foreign key
                 con.Execute("DROP TABLE IF EXISTS Neuron");
                 con.Execute("CREATE TABLE Neuron(" +
-                    "id INTEGER PRIMARY KEY," +
-                    "LayerId INT" +
+                    "Id INTEGER PRIMARY KEY," +
+                    "LayerId INT NOT NULL," +
                     "Bias REAL," +
                     "FOREIGN KEY(LayerId) REFERENCES Layer(Id))");
 
 
                 //link
+                //foreign key
                 con.Execute("DROP TABLE IF EXISTS Link");
                 con.Execute("CREATE TABLE Link(" +
                     "Id INTEGER PRIMARY KEY," +
-                    "InputNeuronId INT" +
-                    "OutputNeuronId INT" +
-                    "Weight REAL)");
-
-
-                //primary key link
-
+                    "InputNeuronId INT," +
+                    "OutputNeuronId INT," +
+                    "Weight REAL," +
+                    "FOREIGN KEY(InputNeuronId) REFERENCES Neuron(Id)," +
+                    "FOREIGN KEY(OutputNeuronId) REFERENCES Neuron(Id))");
             }
         }
 
@@ -69,18 +69,30 @@ namespace Perceptron.Core.IO
             using (var cnn = SimpleDbConnection())
             {
                 cnn.Open();
-                string sql = "INSERT INTO Layer (Depth) Values (@depth);";
-                /*
+                //string sql = "INSERT INTO Layer (Depth) Values (@depth);";
+                
                 int layerId = cnn.Query<int>(
                     @"INSERT INTO Layer 
                     ( depth ) VALUES 
                     ( @depth );
-                    select last_insert_rowid()", depth).First();
-            */
-                var affectedRows = cnn.Execute(sql, new { depth });
-                Console.WriteLine(affectedRows);
+                    select last_insert_rowid()", new { depth }).First();
+            
+                //var affectedRows = cnn.Execute(sql, new { depth });
+                //Console.WriteLine(affectedRows);
+
+
+                //add neurons
+                string sql2 = "INSERT INTO Neuron (LayerId,Bias) Values (@LayerId,@Biais);";
+
+                //https://sql.sh/cours/insert-into
+                foreach (Neuron neuron in layer.Neurons)
+                {
+                    cnn.Execute(sql2, new { LayerId=layerId, neuron.Bias });
+                }
+
+
             }
-            //add neurons
+
         }
 
 

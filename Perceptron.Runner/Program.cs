@@ -10,11 +10,11 @@ namespace Perceptron.Runner
     {
         static void Main(string[] args)
         {
-            /*
+            
             //SourceImage.Render(SourceImage.CreateRandomPicture(20, 20), 20, 20);
             
-            //var matrix = SourceImage.GetBWMatrixFromPicture("1579480335.png");
-            var matrix = SourceImage.GetBWMatrixFromPicture("source3.png");
+            var matrix = SourceImage.GetBWMatrixFromPicture("1579480335.png");
+            //var matrix = SourceImage.GetBWMatrixFromPicture("source3.png");
             
             Input input = new Input(20, 20, matrix);
 
@@ -29,12 +29,12 @@ namespace Perceptron.Runner
             Console.WriteLine(network.Print());
 
             
-            */
+            
 
-            var dal = new DataAccessLayer();
+            var dal = new DataAccessLibrary();
 
-            //dal.CreateDatabase();
-            dal.SaveLayer(new Layer(new BasicConfiguration(), 5),2);
+            dal.CreateDatabase();
+            dal.SaveLayer(network.Layers[1],2);
 
             Console.WriteLine("Finished !");
             Console.ReadLine();
