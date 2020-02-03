@@ -85,7 +85,7 @@ namespace Perceptron.Tests
             //arrange
             Input sut = new Input(width, heigth, matrix);
             //act
-            sut.LoadLayer(fakelayer);
+            sut.LinkLayer(fakelayer);
             //assert
             for (int y = 0; y < heigth; y++)
             {

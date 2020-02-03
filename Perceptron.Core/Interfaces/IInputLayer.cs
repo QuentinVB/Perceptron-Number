@@ -8,7 +8,9 @@ namespace Perceptron.Core.Interfaces
         int Height { get; }
 
         Layer InputLayer { get; }
-        void LoadLayer(Layer layer);
+        void LinkLayer(Layer layer);
+
+        void UpdateLayer(float[,] newMatrix);
 
         void SetNeuronValueFrom(int x, int y);
     }

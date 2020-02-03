@@ -58,3 +58,8 @@ https://blog.maskalik.com/asp-net/sqlite-simple-database-with-dapper/
 
 .mode column
 .headers on
+
+INSERT INTO Neuron (LayerId,LocalIndex,Bias) Values (1,0,0.5);
+
+
+"D:\Quentin_Data\Documents\03-projets\PerceptronNumber\Perceptron.Runner\bin\Debug\network.sqlite"

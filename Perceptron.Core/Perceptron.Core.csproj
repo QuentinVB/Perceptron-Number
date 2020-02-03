@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\VoidConfiguration.cs" />
     <Compile Include="Configurations\TestableConfiguration.cs" />
     <Compile Include="Configurations\BasicConfiguration.cs" />
     <Compile Include="Interfaces\IConfiguration.cs" />

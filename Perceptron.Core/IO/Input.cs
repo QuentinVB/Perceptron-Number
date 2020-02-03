@@ -11,7 +11,7 @@ namespace Perceptron.Core.IO
         Layer _inputLayer;
         readonly int _width;
         readonly int _height;
-        readonly float[,] _matrix;
+        float[,] _matrix;
 
         public Input(int width, int height, float[,] matrix)
         {
@@ -35,7 +35,7 @@ namespace Perceptron.Core.IO
             }
         }
 
-        public void LoadLayer(Layer inputLayer)
+        public void LinkLayer(Layer inputLayer)
         {
             if(inputLayer.Neurons.Length != Width * Height) throw new ArgumentException("input Layer should have the right number of neurons");
             _inputLayer = inputLayer;
@@ -48,6 +48,23 @@ namespace Perceptron.Core.IO
                 }
             }
         }
+
+        public void UpdateLayer(float[,] newMatrix)
+        {
+            if (newMatrix.Length != Width * Height) throw new ArgumentException("input matrix should have the same width and height");
+            _matrix = newMatrix;
+
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    SetNeuronValueFrom(x, y);
+                }
+            }
+
+
+        }
+
 
         /// <summary>
         /// set the value from the matrix to the corresponding neuron in first layer
@@ -71,10 +88,41 @@ namespace Perceptron.Core.IO
 
         public static Input DefaultInput()
         {
-            int width = 3;
-            int height = 3;
+            int width = 2;
+            int height = 2;
             float[,] matrix = new float[width, height];
+            float value = 1;
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    matrix[i, j] = value;
+                    value /= 2;
+                }
+            }
             return new Input(width, height, matrix);
+        }
+
+        public static Input RandomInput()
+        {
+            int width = 2;
+            int height = 2;
+            float[,] matrix = GetRandomMatrix(width, height);
+            return new Input(width, height, matrix);
+        }
+
+        public static float[,] GetRandomMatrix(int width = 2, int height = 2)
+        {
+            Random rnd = new Random();
+            float[,] matrix = new float[width, height];
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    matrix[i, j] = (float)rnd.NextDouble();
+                }
+            }
+            return matrix;
         }
     }
 }

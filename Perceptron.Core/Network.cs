@@ -101,7 +101,7 @@ namespace Perceptron.Core
 
             _layers[0] = new Layer(Configuration,neuronPerLayer, 0, Configuration.NeuronPerLayer);
 
-            inputLayer.LoadLayer(_layers[0]);
+            inputLayer.LinkLayer(_layers[0]);
         }
 
         private void AttachOutput(IOutputReader<T> outputLayer,int layerPosition)
@@ -134,9 +134,9 @@ namespace Perceptron.Core
             } 
         }
 
-
         public void UpdateWeight()
         {
+
             //TODO : Add security here
             for (int i = 1; i < Layers.Length; i++)
             {
@@ -146,6 +146,12 @@ namespace Perceptron.Core
                     layer.Neurons[j].ComputeWeight();
                 }
             }
+        }
+
+        public void UpdateNetwork(float [,] newMatrix)
+        {
+            InputLayer.UpdateLayer(newMatrix);
+            UpdateWeight();
         }
     }
 }
