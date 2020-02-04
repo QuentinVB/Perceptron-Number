@@ -16,7 +16,7 @@ namespace Perceptron.Core.Configurations
 
 
         public TestableConfiguration()
-            :this(2,8)
+            :this(2,4)
         {
         }
         public TestableConfiguration(int hiddenLayerCount,int neuronPerLayer)

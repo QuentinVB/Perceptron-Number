@@ -245,6 +245,7 @@ namespace Perceptron.Core.IO
         public void UpdateNetwork(Network<T> network)
         {
             if (!File.Exists(DbFile)) throw new FileNotFoundException();
+
             for (int i = 0; i < network.Layers.Length; i++)
             {
                 UpdateLayers(network.Layers[i], i);
@@ -255,60 +256,71 @@ namespace Perceptron.Core.IO
         public void UpdateLayers(Layer layer, int depth)
         {
             if (!File.Exists(DbFile)) throw new FileNotFoundException();
-
-            for (int i = 0; i < layer.Neurons.Length; i++)
-            {
-                UpdateNeuron(layer.Neurons[i], depth + 1, i);
-
-
-                //if(depth>0)RestoreParentsLinkData(layer.Neurons[i], i);
-            }
-        }
-
-        public void UpdateNeuron(Neuron neuron, int layerId,int localIndex)
-        {
-            if (!File.Exists(DbFile)) throw new FileNotFoundException();
+            //TODO : secure data  
             using (SQLiteConnection cnn = SimpleDbConnection())
             {
                 cnn.Open();
-                using (var transaction = cnn.BeginTransaction())
+                //string sql = "INSERT INTO Layer (Depth) Values (@depth);";
+
+                for (int i = 0; i < layer.Neurons.Length; i++)
                 {
-
-                    string sql = "UPDATE Neuron SET Bias = @Bias WHERE LayerId = @LayerId AND LocalIndex=@LocalIndex;";
-
-
+                    string sql = "UPDATE Neuron SET Bias = @Bias WHERE LayerId = @LayerID AND LocalIndex = @LocalIndex;";
                     cnn.Execute(
-                        sql, 
-                        new NeuronViewModel { LayerId = layerId, LocalIndex = localIndex, Bias = neuron.Bias }, 
-                        transaction: transaction);
+                        sql,
+                        new { LayerID = depth + 1, LocalIndex = i, Bias = layer.Neurons[i].Bias }
+                        );
 
-                    //add link
 
-                    if(neuron.ParentsLink.Length>0)
-                    {
-                        //getLink list
+                    if (layer.Neurons[i].ParentsLink.Length > 0) UpdateParentNeuronLink(cnn, layer.Neurons[i], depth +1 , i);
 
-                        string sql2 = "UPDATE Link SET Weight = @Weight WHERE OutputNeuronId = @OutputNeuronId AND InputNeuronId =@InputNeuronId;";
-
-                        for (int i = 0; i < neuron.ParentsLink.Length; i++)
-                        {
-                            /*
-                            cnn.Execute(
-                                sql2, 
-                                new LinkViewModel { InputNeuronId = neuron.ParentsLink[i].InputNeuron, OutputNeuronId = neuron.Bias Weight = layerId, }, 
-                                transaction: transaction);
-                                */
-                        }
-                        transaction.Commit();
-                    }
-                    
                 }
+
+
+
+
             }
         }
-        
+
+        public void UpdateParentNeuronLink(SQLiteConnection connexion, Neuron neuron, int outputlayerId, int outputLocalId )
+        {
+            if (!File.Exists(DbFile)) throw new FileNotFoundException();
+
+            if (outputlayerId - 1 < 0) throw new ArgumentOutOfRangeException();
+            int inputLayerId = outputlayerId - 1;
+            //TODO : secure data  
+
+            using (var transaction = connexion.BeginTransaction())
+            {
+                //add link
+                string sql = @"UPDATE Link 
+                                SET Weight = @Weight 
+                                WHERE Id = id in (SELECT id FROM Neuron WHERE
+                                    (OutputNeuronId = id in (SELECT id FROM neuron WHERE LayerId = @InputLayerId AND LocalIndex = @InputLocalId ))
+                                    AND 
+                                    (InputNeuronId = id in (SELECT id FROM neuron WHERE LayerId = @OutputlayerId AND LocalIndex = @OutputLocalId)));";
+
+                //https://sql.sh/cours/insert-into
+                for (int i = 0; i < neuron.ParentsLink.Length; i++)
+                {
+                    var param = new { 
+                        Weight = neuron.ParentsLink[i].Weight, 
+                        InputLayerId = inputLayerId, 
+                        OutputlayerId = outputlayerId, 
+                        InputLocalId = i,
+                        OutputLocalId = outputLocalId
+                    };
+                    connexion.Execute(
+                                sql,
+                                param,
+                                transaction: transaction);
+
+                }
+                transaction.Commit();
+            }    
+        }
 
         //Recreate from db
-       
+
         //Update
 
         /*
