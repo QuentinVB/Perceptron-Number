@@ -10,7 +10,7 @@ namespace Perceptron.Runner
     {
         static void Main(string[] args)
         {
-            
+            /*
             //SourceImage.Render(SourceImage.CreateRandomPicture(20, 20), 20, 20);
             
             var matrix = SourceImage.GetBWMatrixFromPicture("1579480335.png");
@@ -35,7 +35,11 @@ namespace Perceptron.Runner
             Console.WriteLine(network.Print());
 
 
+    */
 
+            DataImageReader.ReadLabelFile("t10k-labels.idx1-ubyte");
+            DataImageReader.ReadImageFile("t10k-images.idx3-ubyte");
+            
             Console.WriteLine("Finished !");
             Console.ReadLine();
         }
