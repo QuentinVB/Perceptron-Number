@@ -44,7 +44,8 @@ namespace Perceptron.Core
                     0.0f,
                     parentLayerNeuronCount,
                     childrenLayerNeuronCount,
-                    Configuration.BiasSource
+                    Configuration.BiasSource,
+                    Configuration.ActivationFunction
                 );
             }
         }

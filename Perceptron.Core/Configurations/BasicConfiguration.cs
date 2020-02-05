@@ -16,6 +16,8 @@ namespace Perceptron.Core.Configurations
         public float BiasSource { get => (float)(_randomSource.NextDouble() * _randomSource.Next(-10, 10)); }
         public float WeightSource { get => (float)(_randomSource.NextDouble()); }
         public Random RandomSource { get => _randomSource; }
+        public bool SaveToDisk { get => true; }
+
         public float ActivationFunction(float x) => Neuron.Sigmoid(x);
     }
 }

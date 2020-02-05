@@ -15,44 +15,26 @@ namespace Perceptron.Runner
             
             var matrix = SourceImage.GetBWMatrixFromPicture("1579480335.png");
             //var matrix = SourceImage.GetBWMatrixFromPicture("source3.png");
+            Console.WriteLine("Creating network...");
 
             Input input = Input.DefaultInput();
             //Input input = new Input(20, 20, matrix);
             Output<int> output = new Output<int>(new int[10] { 0,1,2,3,4,5,6,7,8,9});
-            Network<int> network = new Network<int>(new TestableConfiguration(), input,output);
-            
+            Network<int> network = new Network<int>(new TestableConfiguration(2,4,true), input,output);
+            Console.WriteLine("Done !");
+
+
+
             Console.WriteLine(network.Print());
             Console.ReadLine();
 
+            
+
             Console.Clear();
-            network.UpdateWeight();
+            network.UpdateNetwork(Input.GetRandomMatrix());
             Console.WriteLine(network.Print());
 
-            var dal = new DataAccessLibrary<int>();
 
-            Console.WriteLine("saving ...");
-
-            dal.CreateDatabase();
-            dal.SaveNetwork(network);
-            Console.WriteLine("saved");
-
-            network.UpdateNetwork(Input.GetRandomMatrix());
-
-            Console.WriteLine("saving ...");
-            dal.UpdateNetwork(network);
-            Console.WriteLine("saved");
-
-            //dal.SaveLayer(network.Layers[0],1);
-
-            /*
-            Network<int> network2 = new Network<int>(new VoidConfiguration(), input, output);
-            Console.WriteLine("restore ...");
-
-            dal.RestoreNetwork(network2);
-            Console.WriteLine("restored");
-            */
-
-            //dal.SaveParentNeuronLink(network.Layers[2].Neurons[0], 0, 2);
 
             Console.WriteLine("Finished !");
             Console.ReadLine();

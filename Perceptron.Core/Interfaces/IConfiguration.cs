@@ -14,5 +14,6 @@ namespace Perceptron.Core.Interfaces
         float BiasSource { get;  }
         float WeightSource { get;  }
         float ActivationFunction(float x);
+        bool SaveToDisk { get; }
     }
 }

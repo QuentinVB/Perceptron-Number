@@ -13,14 +13,16 @@ namespace Perceptron.Core
         int _childrenIndex=0;
         Link[] _childrenLink;
 
+        ActivationFunction _activationFunction;
+
 
         public Neuron(float activationLevel) :
-            this(activationLevel, 0,0,0)
+            this(activationLevel, 0,0,0,Sigmoid)
         {  }
 
 
         public Neuron(float activationLevel,float bias) :
-            this(activationLevel, 0, 0, bias)
+            this(activationLevel, 0, 0, bias, Sigmoid)
         { }
 
         public Neuron(
@@ -28,14 +30,16 @@ namespace Perceptron.Core
             int parentsLinkCount,
             int childrenLinkCount
             )
-            : this(activationLevel, parentsLinkCount, childrenLinkCount, 0)
+            : this(activationLevel, parentsLinkCount, childrenLinkCount, 0, Sigmoid)
         { }
 
             public Neuron(
             float activationLevel,
             int parentsLinkCount, 
             int childrenLinkCount,
-            float bias)
+            float bias,
+            ActivationFunction activationFunction
+                )
         {
             if (0 > activationLevel || activationLevel > 1) throw new ArgumentOutOfRangeException("Activation level should be between 0 and 1. Was " + activationLevel);
             if (parentsLinkCount<0) throw new ArgumentOutOfRangeException("parentLink Count should be positive");
@@ -45,6 +49,8 @@ namespace Perceptron.Core
 
             _parentsLink = new Link[parentsLinkCount];
             _childrenLink = new Link[childrenLinkCount];
+            _activationFunction = activationFunction;
+
         }
 
         ///activation level
@@ -58,6 +64,9 @@ namespace Perceptron.Core
         public Link[] ParentsLink { get => _parentsLink; set => _parentsLink = value; }
         public Link[] ChildrenLink { get => _childrenLink; set => _childrenLink = value; }
         public float Bias { get => _bias; set => _bias = value; }
+
+        public delegate float ActivationFunction(float x);
+
 
         public static Neuron MaxDefault()
         {
@@ -131,7 +140,7 @@ namespace Perceptron.Core
 
         public void ComputeWeight()
         {
-            _activationLevel = Sigmoid(SumParents() + _bias); 
+            _activationLevel = _activationFunction(SumParents() + _bias); 
         }
 
         public override int GetHashCode()

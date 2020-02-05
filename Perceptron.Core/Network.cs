@@ -1,4 +1,5 @@
 ﻿using Perceptron.Core.Interfaces;
+using Perceptron.Core.IO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,8 +12,11 @@ namespace Perceptron.Core
         readonly IInputLayer _inputLayer;
         readonly IOutputReader<T> _outputLayer;
         readonly Layer[] _layers;
-
         readonly IConfiguration _configuration;
+
+        bool _isLearning;
+
+        readonly DataAccessLibrary<T> _dal;
 
         public Network(
             IConfiguration configuration, 
@@ -24,6 +28,8 @@ namespace Perceptron.Core
             if (configuration.NeuronPerLayer <= 0) throw new ArgumentException("Neuron per layer should be positive");
 
             _configuration = configuration;
+            _isLearning = false;
+
 
             randomSource = new Random();
 
@@ -37,31 +43,19 @@ namespace Perceptron.Core
             AttachOutput(outputLayer, configuration.HiddenLayerCount + 1);
 
             BindAllNeuron();
-        }
 
-        private void BindAllNeuron()
-        {
-            for (int i = 0; i < _layers.Length; i++)
+            UpdateWeight();
+
+            if(configuration.SaveToDisk)
             {
-                Neuron[] neurons = _layers[i].Neurons;
-                for (int j = 0; j < neurons.Length; j++)
-                {
-                    if(i  < _layers.Length-1)
-                    {
-                        Neuron[] nextNeurons = _layers[i + 1].Neurons;
-                        for (int k = 0; k < nextNeurons.Length; k++)
-                        {
-                            _ = new Link(
-                                neurons[j], 
-                                nextNeurons[k], 
-                                Configuration.BiasSource);
-                        }
-                    }                       
-                }
-
+                _dal = new DataAccessLibrary<T>();
+                _dal.CreateDatabase();
+                _dal.SaveNetwork(this);
             }
+
         }
 
+       
         public Layer[] Layers { get => _layers; }
         //TODO : make it lazy
         public int NeuronCount { get {
@@ -76,6 +70,60 @@ namespace Perceptron.Core
         public IConfiguration Configuration => _configuration;
         public IInputLayer InputLayer => _inputLayer;
         public IOutputReader<T> OutputLayer => _outputLayer;
+        public bool IsLearning { get => _isLearning; set => _isLearning = value; }
+
+
+
+        public T ReadResult()
+        {
+            //TODO: Read based on input, then compute ?
+            return _outputLayer.ReadResult();
+        }
+
+        public int TotalVariable
+        {
+            get
+            {
+                return NeuronCount * 2
+                    + (_inputLayer.Height * _inputLayer.Width) * Configuration.NeuronPerLayer
+                    + Configuration.HiddenLayerCount * Configuration.NeuronPerLayer
+                 ;
+            }
+        }
+
+
+
+
+        public void UpdateNetwork(float[,] newMatrix)
+        {
+            InputLayer.UpdateLayer(newMatrix);
+            UpdateWeight();
+        }
+
+        //make it learn !
+        private void BindAllNeuron()
+        {
+            for (int i = 0; i < _layers.Length; i++)
+            {
+                Neuron[] neurons = _layers[i].Neurons;
+                for (int j = 0; j < neurons.Length; j++)
+                {
+                    if (i < _layers.Length - 1)
+                    {
+                        Neuron[] nextNeurons = _layers[i + 1].Neurons;
+                        for (int k = 0; k < nextNeurons.Length; k++)
+                        {
+                            _ = new Link(
+                                neurons[j],
+                                nextNeurons[k],
+                                Configuration.BiasSource);
+                        }
+                    }
+                }
+
+            }
+        }
+
 
         private void CreateHiddenLayer()
         {
@@ -119,22 +167,7 @@ namespace Perceptron.Core
             }          
         }
 
-        public T ReadResult()
-        {
-            //TODO: Read based on input, then compute ?
-            return _outputLayer.ReadResult();
-        }
-
-        public int TotalVariable { get
-            {
-                return NeuronCount * 2 
-                    + (_inputLayer.Height * _inputLayer.Width) * Configuration.NeuronPerLayer
-                    + Configuration .HiddenLayerCount* Configuration.NeuronPerLayer
-                 ;
-            } 
-        }
-
-        public void UpdateWeight()
+        private void UpdateWeight()
         {
 
             //TODO : Add security here
@@ -143,15 +176,13 @@ namespace Perceptron.Core
                 Layer layer = Layers[i];
                 for (int j = 0; j < Layers[i].Neurons.Length; j++)
                 {
+                    //TODO : inject activation function here
                     layer.Neurons[j].ComputeWeight();
                 }
             }
         }
 
-        public void UpdateNetwork(float [,] newMatrix)
-        {
-            InputLayer.UpdateLayer(newMatrix);
-            UpdateWeight();
-        }
+       
+
     }
 }
