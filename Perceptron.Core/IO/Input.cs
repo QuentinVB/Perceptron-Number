@@ -13,6 +13,10 @@ namespace Perceptron.Core.IO
         readonly int _height;
         float[,] _matrix;
 
+        public Input(int width, int height):this(width, height,new float[width , height])
+        {
+            
+        }
         public Input(int width, int height, float[,] matrix)
         {
             if(matrix.Length != width * height) throw new ArgumentException("matrix and matrix size should be the same");

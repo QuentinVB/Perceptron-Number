@@ -52,12 +52,6 @@
     <Compile Include="SourceImage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Perceptron.Core\Perceptron.Core.csproj">
-      <Project>{f80a2216-abc8-40e6-9883-9df42a75e52d}</Project>
-      <Name>Perceptron.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

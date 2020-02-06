@@ -12,7 +12,7 @@ namespace Perceptron.Core.Configurations
     {
         Random _randomSource = new Random();
         public int HiddenLayerCount { get => 2; }
-        public int NeuronPerLayer { get => 8; }
+        public int NeuronPerLayer { get => 16; }
         public float BiasSource { get => (float)(_randomSource.NextDouble() * _randomSource.Next(-10, 10)); }
         public float WeightSource { get => (float)(_randomSource.NextDouble()); }
         public Random RandomSource { get => _randomSource; }

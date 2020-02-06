@@ -9,7 +9,7 @@ namespace Perceptron.Core
     {
         public override string ToString()
         {
-            return $"Layers : {this.Layers.Length}, TotalNeuronCount : {this.NeuronCount}";
+            return $"Layers : {this.Layers.Length}, TotalNeuronCount : {this.NeuronCount}, Accuracy : {this._accuracy}";
         }
 
         public string Print()

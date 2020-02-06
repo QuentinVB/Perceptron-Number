@@ -14,7 +14,6 @@ namespace Perceptron.Core
         readonly Layer[] _layers;
         readonly IConfiguration _configuration;
 
-        bool _isLearning;
 
         readonly DataAccessLibrary<T> _dal;
 
@@ -28,7 +27,6 @@ namespace Perceptron.Core
             if (configuration.NeuronPerLayer <= 0) throw new ArgumentException("Neuron per layer should be positive");
 
             _configuration = configuration;
-            _isLearning = false;
 
 
             randomSource = new Random();
@@ -70,7 +68,6 @@ namespace Perceptron.Core
         public IConfiguration Configuration => _configuration;
         public IInputLayer InputLayer => _inputLayer;
         public IOutputReader<T> OutputLayer => _outputLayer;
-        public bool IsLearning { get => _isLearning; set => _isLearning = value; }
 
 
 
@@ -94,11 +91,7 @@ namespace Perceptron.Core
 
 
 
-        public void UpdateNetwork(float[,] newMatrix)
-        {
-            InputLayer.UpdateLayer(newMatrix);
-            UpdateWeight();
-        }
+       
 
         //make it learn !
         private void BindAllNeuron()
