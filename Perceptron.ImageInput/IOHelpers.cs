@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Perceptron.Core.IO
+namespace Perceptron.ImageInput
 {
 
     public static class IOHelpers

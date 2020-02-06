@@ -37,9 +37,9 @@ namespace Perceptron.Runner
 
     */
 
-            DataImageReader.ReadLabelFile("t10k-labels.idx1-ubyte");
-            DataImageReader.ReadImageFile("t10k-images.idx3-ubyte");
-            
+
+            var imageDataBlocks = DataImageReader.LoadImageData("train-labels.idx1-ubyte", "train-images.idx3-ubyte");
+
             Console.WriteLine("Finished !");
             Console.ReadLine();
         }

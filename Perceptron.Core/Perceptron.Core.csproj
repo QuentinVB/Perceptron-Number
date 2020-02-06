@@ -50,16 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\ProductionConfiguration.cs" />
     <Compile Include="Configurations\VoidConfiguration.cs" />
     <Compile Include="Configurations\TestableConfiguration.cs" />
     <Compile Include="Configurations\BasicConfiguration.cs" />
     <Compile Include="Interfaces\IConfiguration.cs" />
     <Compile Include="Interfaces\IInputLayer.cs" />
     <Compile Include="Interfaces\IOutputReader.cs" />
-    <Compile Include="IO\DataImageReader.cs" />
     <Compile Include="IO\Input.cs" />
     <Compile Include="IO\DataAccessLibrary.cs" />
-    <Compile Include="IO\IOHelpers.cs" />
     <Compile Include="IO\Output.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="Link.cs" />

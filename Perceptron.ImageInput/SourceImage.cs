@@ -68,37 +68,30 @@ namespace Perceptron.ImageInput
                 throw new Exception("An error occured while generating the bitmap "+e);
             }
         }
-    }
-}
-/*
- double matrixvalue = Math.Abs(matrix[x, y]);
-                        
-    using (Bitmap bmp = new Bitmap(path.ToString()))
-            {
-                matrix = new float[bmp.Width, bmp.Height];
-                //read
-                for (int x = 0; x < bmp.Width; x++)
-                {
-                    for (int y = 0; y < bmp.Height; y++)
-                    {
-                        Color pixelColor = bmp.GetPixel(x, y);
-                        matrix[x,y]=pixelColor.GetBrightness();
 
-                        
+        public static void Render(byte[] firstImage, uint width, uint height)
+        {
+            try
+            {
+                //draw
+                Bitmap bmp = new Bitmap((int)width, (int)height);
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        int idx = x + y * (int)width;
+                        Color newColor = Color.FromArgb(Math.Abs(firstImage[idx]), Math.Abs(firstImage[idx]), Math.Abs(firstImage[idx]));
+                        bmp.SetPixel(x, y, newColor);
                     }
                 }
                 //save
-
                 Directory.CreateDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory() + "\\output\\"));
-                bmp.Save($".\\render\\{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}.png", ImageFormat.Png);
+                bmp.Save($".\\output\\{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}.png", ImageFormat.Png);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("An error occured while generating the bitmap");
+                throw new Exception("An error occured while generating the bitmap " + e);
             }
-                        int value = (matrixvalue > 1) ? 255 : (int)(matrixvalue * 255);
-                        Color newColor = Color.FromArgb(value, value, value);
-                        bmp.SetPixel(x, y, newColor);
-     
-     
-     */
+        }
+    }
+}
