@@ -10,7 +10,7 @@ using Dapper;
 namespace Perceptron.Core.IO
 {
     //make it partial
-    public class DataAccessLibrary<T>
+    public class DataAccessLibrary<T> where T : IComparable<T>
     {
         public static string DbFile
         {

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Perceptron.Core
 {
-    public partial class Network<T>
+    public partial class Network<T> where T : IComparable<T>
     {
         Random randomSource;
         readonly IInputLayer _inputLayer;

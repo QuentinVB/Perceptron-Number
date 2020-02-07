@@ -7,7 +7,7 @@ using System.Text;
 namespace Perceptron.Core.IO
 {
     //TODO: should be abstract ?
-    public class Output<T> : IOutputReader<T>
+    public class Output<T> : IOutputReader<T> where T : IComparable<T>
     {
         T[] _ouputValues;
         List<OutputAssociation<Neuron, T>> _associations;
@@ -56,6 +56,20 @@ namespace Perceptron.Core.IO
             }
 
             return new Output<T>(outputValues);
+        }
+
+        public float ComputeCost(T label)
+        {
+            /*
+            float cost = 0;
+            for (int i = 0; i < _associations.Count; i++)
+            {
+                if(label.CompareTo(_associations[i].ValueOut) = 0 )
+                { 
+
+                }
+            }*/
+            throw new NotImplementedException();
         }
     }
 }

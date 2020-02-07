@@ -15,8 +15,8 @@ namespace Perceptron.ImageInput
     {
         byte[] _image;
         DataBlockCommonInfo _commonInfo;
-        int _label;
-        public ImageDataBlock(byte[] image, DataBlockCommonInfo commonInfo, int label)
+        byte _label;
+        public ImageDataBlock(byte[] image, DataBlockCommonInfo commonInfo, byte label)
         {
             _commonInfo = commonInfo;
             _image = image;
@@ -24,7 +24,7 @@ namespace Perceptron.ImageInput
         }
 
         public byte[] Image { get => _image;  }
-        public int Label { get => _label; }
+        public byte Label { get => _label; }
         public DataBlockCommonInfo CommonInfo { get => _commonInfo;  }
 
         public byte GetPixelAt(int x,int y)

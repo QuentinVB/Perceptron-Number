@@ -33,7 +33,7 @@ namespace Perceptron.Runner
             
 
             Console.Clear();
-            network.TestingNetworkAccuracy(imageDataBlocks, 200 );
+            network.TestingNetworkAccuracy(imageDataBlocks, 1 );
             Console.WriteLine(network.Print());
             Console.WriteLine(network.ToString());
 

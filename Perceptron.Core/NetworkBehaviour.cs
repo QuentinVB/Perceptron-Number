@@ -49,7 +49,7 @@ namespace Perceptron.Core
 
             if (imageDataBlocks[0].CommonInfo.Width != InputLayer.Width || imageDataBlocks[0].CommonInfo.Height != InputLayer.Height) throw new DataMisalignedException("");
 
-            int accuracy = 0;
+            float accuracy = 0f;
 
             for (int i = 0; i < imageCount; i++)
             {
@@ -59,6 +59,33 @@ namespace Perceptron.Core
                 if(result is int computedResult)
                 {
                     if (computedResult == imageDataBlocks[i].Label) accuracy++;
+                }
+            }
+            _accuracy = accuracy / imageCount;
+            return _accuracy;
+        }
+
+
+        public float NetworkLearning(ImageDataBlock[] imageDataBlocks, int imageCount)
+        {
+            Mode = NetworkMode.Learning;
+
+            if (imageDataBlocks[0].CommonInfo.Width != InputLayer.Width || imageDataBlocks[0].CommonInfo.Height != InputLayer.Height) throw new DataMisalignedException("");
+
+            float accuracy = 0f;
+
+            for (int i = 0; i < imageCount; i++)
+            {
+                UpdateNetwork(imageDataBlocks[i].Image, imageDataBlocks[i].CommonInfo.Width, imageDataBlocks[i].CommonInfo.Height);
+                var result = OutputLayer.ReadResult();
+                //not generic
+                if (result is int computedResult)
+                {
+                    if (computedResult == imageDataBlocks[i].Label) accuracy++;
+                    else
+                    {
+                        //float cost = OutputLayer.ComputeCost(imageDataBlocks[i].Label);
+                    }
                 }
             }
             _accuracy = accuracy / imageCount;
