@@ -82,10 +82,13 @@ namespace Perceptron.Core
                 if (result is int computedResult)
                 {
                     if (computedResult == imageDataBlocks[i].Label) accuracy++;
-                    else
-                    {
-                        //float cost = OutputLayer.ComputeCost(imageDataBlocks[i].Label);
+                    
+                    //TODO : controle relearn if the network was right
+                    if((int)imageDataBlocks[i].Label is T label)
+                    {   
+                        float cost = OutputLayer.ComputeCost(label);
                     }
+                    
                 }
             }
             _accuracy = accuracy / imageCount;

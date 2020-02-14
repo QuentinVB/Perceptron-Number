@@ -58,18 +58,28 @@ namespace Perceptron.Core.IO
             return new Output<T>(outputValues);
         }
 
+        /// <summary>
+        /// sum the squared difference between actual output minus the desired output
+        /// </summary>
+        /// <param name="label">the desired matching label</param>
+        /// <returns></returns>
         public float ComputeCost(T label)
-        {
-            /*
+        {            
             float cost = 0;
-            for (int i = 0; i < _associations.Count; i++)
-            {
-                if(label.CompareTo(_associations[i].ValueOut) = 0 )
-                { 
 
+
+            for (int i = 0; i < OutputCount; i++)
+            {
+                if(label.CompareTo(_associations[i].ValueOut) == 0 )
+                {
+                     cost += (float)Math.Pow(_associations[i].LinkedNeuron.ActivationLevel - 1.0f,2);
                 }
-            }*/
-            throw new NotImplementedException();
+                else
+                {
+                    cost += (float)Math.Pow(_associations[i].LinkedNeuron.ActivationLevel, 2);
+                }
+            }
+            return cost;
         }
     }
 }
